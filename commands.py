@@ -2,12 +2,6 @@ import cryptostorm
 import configparser
 
 
-conf = 'conf.ini'
-config = configparser.ConfigParser()
-config.read(conf)
-alphabet = config['cryptography']['alphabet']
-crypto_key = config['cryptography']['key']
-
 def initExit():
     input('Press Enter to exit...')
     exit()
@@ -19,7 +13,13 @@ def getCommands(command):
     return commands
 
 
-def doCommands(commands):
+def doCommands(commands, conf):
+    # Init configuration
+    config = configparser.ConfigParser()
+    config.read(conf)
+    alphabet = config['cryptography']['alphabet']
+    crypto_key = config['cryptography']['key']
+
     if commands[0] == 'exit':
         initExit()
     elif commands[0] == 'crypt-key':
@@ -31,22 +31,30 @@ def doCommands(commands):
             config.write(open(conf, 'w'))
             print(' - New key is ' + key)
     elif commands[0] == 'encrypt':
-        if commands[1] == '':
-            print(' - No message to encrypt')
+        msg = input('Message: ')
+        if commands[3] != '' and commands[2] != '' and commands[1] != '':
+            msg = cryptostorm.encryptMsg(msg, commands[3], commands[2], int(commands[1]))
+        elif commands[2] != '' and commands[1] != '':
+            msg = cryptostorm.encryptMsg(msg, alphabet, commands[2], int(commands[1]))
+        elif commands[1] != '':
+            msg = cryptostorm.encryptMsg(msg, alphabet, crypto_key, int(commands[1]))
         else:
-            if commands[4] != '' and commands[3] != '' and commands[2] != '':
-                msg = cryptostorm.encryptMsg(commands[1], commands[4], commands[3], int(commands[2]))
-            elif commands[3] != '' and commands[2] != '':
-                msg = cryptostorm.encryptMsg(commands[1], alphabet, commands[3], int(commands[2]))
-            elif commands[2] != '':
-                msg = cryptostorm.encryptMsg(commands[1], alphabet, crypto_key, int(commands[2]))
-            else:
-                msg = cryptostorm.encryptMsg(commands[1], alphabet, crypto_key)
-
-            if msg == False:
-                print(' - Unknown error')
-            else:
-                print(' - This is encrypted msg:\n' + msg)
-
-p = '''with open(file, "w") as settings:
-    config.write(settings)'''
+            msg = cryptostorm.encryptMsg(msg, alphabet, crypto_key)
+        if msg is False:
+            print(' - Unknown error')
+        else:
+            print(' - This is encrypted message:\n' + msg)
+    elif commands[0] == 'decrypt':
+        msg = input('Message: ')
+        if commands[3] != '' and commands[2] != '' and commands[1] != '':
+            msg = cryptostorm.decryptMsg(msg, commands[3], commands[2], int(commands[1]))
+        elif commands[2] != '' and commands[1] != '':
+            msg = cryptostorm.decryptMsg(msg, alphabet, commands[2], int(commands[1]))
+        elif commands[1] != '':
+            msg = cryptostorm.decryptMsg(msg, alphabet, crypto_key, int(commands[1]))
+        else:
+            msg = cryptostorm.decryptMsg(msg, alphabet, crypto_key)
+        if msg is False:
+            print(' - Unknown error')
+        else:
+            print(' - This is decrypted message:\n' + msg)

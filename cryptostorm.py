@@ -46,14 +46,33 @@ def encryptMsg(msg, alphabet, key, circle=1):
         alph = list(alphabet)
         keys = list(key)
         y = msg
-        print(len(alph))
         for z in range(circle):
             encrypted_msg = []
             for i in range(len(y)):
-                print(z+1, alph[alph.index(y[i])], keys[alph.index(y[i])])
+                # print(z+1, alph[alph.index(y[i])], keys[alph.index(y[i])])
                 encrypted_msg.append(keys[alph.index(y[i])])
             y = ''.join(encrypted_msg)
         return ''.join(encrypted_msg)
+    elif not checkMsgChars(msg, alphabet):
+        return False
+    elif not checkKey(key, alphabet):
+        return False
+    else:
+        return False
+
+
+def decryptMsg(msg, alphabet, key, circle=1):
+    if checkMsgChars(msg, alphabet) and checkKey(key, alphabet):
+        alph = list(alphabet)
+        keys = list(key)
+        y = msg
+        for z in range(circle):
+            decrypted_msg = []
+            for i in range(len(y)):
+                # print(z+1, keys[keys.index(y[i])], alph[keys.index(y[i])])
+                decrypted_msg.append(alph[keys.index(y[i])])
+            y = ''.join(decrypted_msg)
+        return ''.join(decrypted_msg)
     elif not checkMsgChars(msg, alphabet):
         return False
     elif not checkKey(key, alphabet):
