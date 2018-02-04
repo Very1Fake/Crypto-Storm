@@ -1,6 +1,14 @@
 from random import randint
 
 
+class WrongMsg(Exception):
+    pass
+
+
+class WrongKey(Exception):
+    pass
+
+
 def createCryptoKey(alphabet):
     alph = list(alphabet)
     key_parts = []
@@ -16,6 +24,14 @@ def createCryptoKey(alphabet):
     return key
 
 
+def convertTo(string, mode=True):
+    if mode is True:
+        string = string.replace(' ', '_')
+    else:
+        string = string.replace('_', ' ')
+    return string
+
+
 def checkMsgChars(msg, alphabet):
     alph = list(alphabet)
     msg = list(msg)
@@ -27,12 +43,20 @@ def checkMsgChars(msg, alphabet):
     return True
 
 
+def checkAlphabet(alphabet):
+    alph = list(alphabet)
+    for i in alph:
+        if i == '_':
+            return False
+    return True
+
+
 def checkKey(key, alphabet):
     alph = list(alphabet)
     keys = list(key)
     if len(key) == len(alphabet) and len(keys) == len(alph):
         for i in alph:
-            if i in keys:
+            if i in keys and i != ' ':
                 pass
             else:
                 return False
@@ -54,11 +78,11 @@ def encryptMsg(msg, alphabet, key, circle=1):
             y = ''.join(encrypted_msg)
         return ''.join(encrypted_msg)
     elif not checkMsgChars(msg, alphabet):
-        return False
+        raise WrongMsg('Symbols from the message are\'t in the alphabet')
     elif not checkKey(key, alphabet):
-        return False
+        raise WrongKey('Key does\'t match the alphabet')
     else:
-        return False
+        raise
 
 
 def decryptMsg(msg, alphabet, key, circle=1):
@@ -74,8 +98,8 @@ def decryptMsg(msg, alphabet, key, circle=1):
             y = ''.join(decrypted_msg)
         return ''.join(decrypted_msg)
     elif not checkMsgChars(msg, alphabet):
-        return False
+        raise WrongMsg('Symbols from the message are\'t in the alphabet')
     elif not checkKey(key, alphabet):
-        return False
+        raise WrongKey('Key does\'t match the alphabet')
     else:
-        return False
+        raise
