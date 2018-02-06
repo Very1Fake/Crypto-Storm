@@ -67,7 +67,7 @@ def doCommands(commands, conf):
             print(' - ' + alphabet)
         elif commands[1] == 'set':
             alph = input('Alphabet: ')
-            if cryptostorm.checkAlphabet(alphabet):
+            if cryptostorm.checkAlphabet(alph):
                 config.set('cryptography', 'alphabet', alph)
                 config.write(open(conf, 'w'))
                 print(' - Alphabet is:\n' + alph)

@@ -46,7 +46,7 @@ def checkMsgChars(msg, alphabet):
 def checkAlphabet(alphabet):
     alph = list(alphabet)
     for i in alph:
-        if i == '_':
+        if i == ' ':
             return False
     return True
 
