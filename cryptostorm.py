@@ -1,5 +1,8 @@
 from random import randint
 
+VERSION = 'v1.0.0b2'
+NAME = 'CryptoStorm Core'
+
 
 class WrongMsg(Exception):
     pass
