@@ -3,7 +3,7 @@ import configparser
 
 VERSION = 'v1.0.1'
 NAME = 'CryptoStorm Client'
-DESCRIPTION = 'CryptoStorm Client for Core v1'
+DESCRIPTION = 'CryptoStorm Client for Core v2'
 
 
 def initExit():
@@ -107,23 +107,26 @@ def doCommands(commands, conf):
         else:
             print(' - This is encrypted message:\n' + msg)
     elif commands[0] == 'decrypt':
-        msg = cryptostorm.convertTo(input('Message: '))
+        if True == False:
+            msg = cryptostorm.convertTo(input('Message: '))
 
-        try:
-            if commands[3] != '' and commands[2] != '' and commands[1] != '':
-                msg = cryptostorm.decryptMsg(msg, commands[3], commands[2], int(commands[1]))
-            elif commands[2] != '' and commands[1] != '':
-                msg = cryptostorm.decryptMsg(msg, alphabet, commands[2], int(commands[1]))
-            elif commands[1] != '':
-                msg = cryptostorm.decryptMsg(msg, alphabet, key, int(commands[1]))
+            try:
+                if commands[3] != '' and commands[2] != '' and commands[1] != '':
+                    msg = cryptostorm.decryptMsg(msg, commands[3], commands[2], int(commands[1]))
+                elif commands[2] != '' and commands[1] != '':
+                    msg = cryptostorm.decryptMsg(msg, alphabet, commands[2], int(commands[1]))
+                elif commands[1] != '':
+                    msg = cryptostorm.decryptMsg(msg, alphabet, key, int(commands[1]))
+                else:
+                    msg = cryptostorm.decryptMsg(msg, alphabet, key)
+            except cryptostorm.WrongMsg as error:
+                print(' - Error: {0}'.format(error))
+            except cryptostorm.WrongKey as error:
+                print(' - Error: {0}'.format(error))
+            except Exception as error:
+                print(' - Error: {0}'.format(error))
             else:
-                msg = cryptostorm.decryptMsg(msg, alphabet, key)
-        except cryptostorm.WrongMsg as error:
-            print(' - Error: {0}'.format(error))
-        except cryptostorm.WrongKey as error:
-            print(' - Error: {0}'.format(error))
-        except Exception as error:
-            print(' - Error: {0}'.format(error))
+                msg = cryptostorm.convertTo(msg, False)
+                print(' - This is decrypted message:\n' + msg)
         else:
-            msg = cryptostorm.convertTo(msg, False)
-            print(' - This is decrypted message:\n' + msg)
+            print(' - Temporary off')

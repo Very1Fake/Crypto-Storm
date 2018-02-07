@@ -1,6 +1,6 @@
 from random import randint
 
-VERSION = 'v1.0.0b2'
+VERSION = 'v2.0.0a1'
 NAME = 'CryptoStorm Core'
 
 
@@ -10,6 +10,25 @@ class WrongMsg(Exception):
 
 class WrongKey(Exception):
     pass
+
+
+def increaseRotor(rotor, height=256):
+    if rotor == height:
+        return 0
+    else:
+        return rotor + 1
+
+
+def decreaseRotor(rotor, height=256):
+    if rotor == 0:
+        return height
+    else:
+        return rotor - 1
+
+
+def getIndex(lenght, rotor, id):
+    index = (rotor + id + 1) % lenght
+    return index - 1
 
 
 def createCryptoKey(alphabet):
@@ -68,17 +87,17 @@ def checkKey(key, alphabet):
     return True
 
 
-def encryptMsg(msg, alphabet, key, circle=1):
+def encryptMsg(msg, alphabet, key, height=256):
     if checkMsgChars(msg, alphabet) and checkKey(key, alphabet):
+        rotor = randint(0, height)
         alph = list(alphabet)
         keys = list(key)
         y = msg
-        for z in range(circle):
-            encrypted_msg = []
-            for i in range(len(y)):
-                # print(z+1, alph[alph.index(y[i])], keys[alph.index(y[i])])
-                encrypted_msg.append(keys[alph.index(y[i])])
-            y = ''.join(encrypted_msg)
+        encrypted_msg = []
+        for i in range(len(y)):
+            print(alph[alph.index(y[i])], keys[getIndex(len(alph), rotor, alph.index(y[i] ))], rotor)
+            encrypted_msg.append(keys[getIndex(len(alph), rotor, alph.index(y[i]))])
+            rotor = increaseRotor(rotor, height)
         return ''.join(encrypted_msg)
     elif not checkMsgChars(msg, alphabet):
         raise WrongMsg('Symbols from the message are\'t in the alphabet')
