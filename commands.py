@@ -1,6 +1,10 @@
 import cryptostorm
 import configparser
 
+VERSION = 'v1.0.1'
+NAME = 'CryptoStorm Client'
+DESCRIPTION = 'CryptoStorm Client for Core v1'
+
 
 def initExit():
     input('Press Enter to exit...')
@@ -22,6 +26,15 @@ def doCommands(commands, conf):
 
     if commands[0] == 'exit':
         initExit()
+    elif commands[0] == 'help':
+        print('\'exit\' - close client')
+        print('\'check\' - check alphabet and key')
+    elif commands[0] == 'ver':
+        print(' - ' + NAME)
+        print('   ' + DESCRIPTION)
+        print('   ' + VERSION)
+        print(' - ' + cryptostorm.NAME)
+        print('   ' + cryptostorm.VERSION)
     elif commands[0] == 'list':
         if cryptostorm.checkKey(key, alphabet):
             keys = list(key)

@@ -1,8 +1,10 @@
 import commands
 import configparser
+import cryptostorm
 
 conf = 'conf.ini'
-print('crypto-storm v1.0b2')
+print(commands.NAME + ' ' + commands.VERSION)
+print(cryptostorm.NAME + ' ' + cryptostorm.VERSION)
 while True:
     command = input('>> ')
 
