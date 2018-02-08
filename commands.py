@@ -75,7 +75,7 @@ def doCommands(commands, conf):
                 print(' - Key is ' + key)
             else:
                 print(' - Key does\'t match the alphabet')
-    elif commands[0] == 'alphabet':
+    elif commands[0] == 'alphabet' or commands[0] == 'alph':
         if commands[1] == '':
             print(' - ' + alphabet)
         elif commands[1] == 'set':
@@ -86,7 +86,7 @@ def doCommands(commands, conf):
                 print(' - Alphabet is:\n' + alph)
             else:
                 print(' - Whitespaces not allowed\n - Use underline')
-    elif commands[0] == 'encrypt':
+    elif commands[0] == 'encrypt' or commands[0] == 'ec':
         msg = cryptostorm.convertTo(input('Message: '))
 
         try:
@@ -106,7 +106,7 @@ def doCommands(commands, conf):
             print(' - Error: {0}'.format(error))
         else:
             print(' - This is encrypted message:\n' + msg)
-    elif commands[0] == 'decrypt':
+    elif commands[0] == 'decrypt' or commands[0] == 'dc':
         msg = cryptostorm.convertTo(input('Message: '))
 
         try:
