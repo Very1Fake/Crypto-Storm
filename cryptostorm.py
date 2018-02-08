@@ -26,9 +26,14 @@ def decreaseRotor(rotor, height=256):
         return rotor - 1
 
 
-def getIndex(lenght, rotor, id):
-    index = (rotor + id + 1) % lenght
-    return index - 1
+def getIndex(lenght, rotor, id, encrypt=True):
+    if encrypt == True:
+        index = (rotor + id + 1) % lenght
+        return index - 1
+    else:
+        while (id - rotor) < 0:
+            id += lenght
+        return id - rotor
 
 
 def createCryptoKey(alphabet):
@@ -107,18 +112,20 @@ def encryptMsg(msg, alphabet, key, height=256):
         raise
 
 
-def decryptMsg(msg, alphabet, key, circle=1):
+def decryptMsg(msg, alphabet, key, rotor=-1, height=256):
     if checkMsgChars(msg, alphabet) and checkKey(key, alphabet):
+        if rotor == -1:
+            rotor = randint(0, height)
         alph = list(alphabet)
         keys = list(key)
-        y = msg
-        for z in range(circle):
-            decrypted_msg = []
-            for i in range(len(y)):
-                # print(z+1, keys[keys.index(y[i])], alph[keys.index(y[i])])
-                decrypted_msg.append(alph[keys.index(y[i])])
-            y = ''.join(decrypted_msg)
-        return ''.join(decrypted_msg)
+        y = msg[::-1]
+        encrypted_msg = []
+        for i in range(len(y)):
+            print(keys[keys.index(y[i])], alph[getIndex(len(alph), rotor, alph.index(y[i]), False)], rotor)
+            encrypted_msg.append(alph[getIndex(len(alph), rotor, keys.index(y[i]), False)])
+            rotor = decreaseRotor(rotor, height)
+        result = ''.join(encrypted_msg)
+        return result[::-1]
     elif not checkMsgChars(msg, alphabet):
         raise WrongMsg('Symbols from the message are\'t in the alphabet')
     elif not checkKey(key, alphabet):
