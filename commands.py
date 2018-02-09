@@ -1,7 +1,7 @@
 import cryptostorm
 import configparser
 
-VERSION = 'v1.0.2'
+VERSION = 'v1.0.3'
 NAME = 'CryptoStorm Client'
 DESCRIPTION = 'CryptoStorm Client for Core v2'
 
@@ -105,11 +105,11 @@ def doCommands(commands, conf):
         except Exception as error:
             print(' - Error: {0}'.format(error))
         else:
-            print(' - This is encrypted message:\n' + msg)
+            print(' - This is encrypted message: ' + msg[0] + '\n - To decrypt message use this number: ' + str(msg[1]))
     elif commands[0] == 'decrypt' or commands[0] == 'dc':
         while True:
             try:
-                start = int(input('Start: '))
+                start = int(input('Number: '))
                 if start < 0:
                     print(' - Error: Start value can\'t be smaller than 0')
                 break
