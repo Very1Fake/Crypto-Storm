@@ -1,6 +1,6 @@
 from random import randint
 
-VERSION = 'v2.0.0a1'
+VERSION = 'v2.0.0b1'
 NAME = 'CryptoStorm Core'
 
 
@@ -100,10 +100,10 @@ def encryptMsg(msg, alphabet, key, height=256):
         y = msg
         encrypted_msg = []
         for i in range(len(y)):
-            print(alph[alph.index(y[i])], keys[getIndex(len(alph), rotor, alph.index(y[i] ))], rotor)
+            print(alph[alph.index(y[i])] + ' -> ' + keys[getIndex(len(alph), rotor, alph.index(y[i] ))] + ' | ' +  str(rotor))
             encrypted_msg.append(keys[getIndex(len(alph), rotor, alph.index(y[i]))])
             rotor = increaseRotor(rotor, height)
-        return ''.join(encrypted_msg)
+        return [''.join(encrypted_msg), rotor - 1]
     elif not checkMsgChars(msg, alphabet):
         raise WrongMsg('Symbols from the message are\'t in the alphabet')
     elif not checkKey(key, alphabet):
@@ -121,7 +121,7 @@ def decryptMsg(msg, alphabet, key, rotor=-1, height=256):
         y = msg[::-1]
         encrypted_msg = []
         for i in range(len(y)):
-            print(keys[keys.index(y[i])], alph[getIndex(len(alph), rotor, alph.index(y[i]), False)], rotor)
+            print(keys[keys.index(y[i])] + ' -> ' + alph[getIndex(len(alph), rotor, alph.index(y[i]), False)] + ' | ' + str(rotor))
             encrypted_msg.append(alph[getIndex(len(alph), rotor, keys.index(y[i]), False)])
             rotor = decreaseRotor(rotor, height)
         result = ''.join(encrypted_msg)
