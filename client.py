@@ -1,5 +1,4 @@
 import commands
-import configparser
 import cryptostorm
 
 conf = 'conf.ini'

@@ -43,6 +43,16 @@ def doCommands(commands, conf):
                 print(' ' + alph[i] + ' - ' + keys[i])
         else:
             print(' - Key from config does\'t match your alphabet')
+    elif commands[0] == 'pickCharsFromFile' or commands[0] == 'pcff':
+        if commands[1] != '':
+            try:
+                data = open(commands[1], 'r').readlines()
+                chars = cryptostorm.pickChars(data)
+                print(chars)
+            except Exception as error:
+                print(' - Error: {0}'.format(error))
+        else:
+            print(' - Input file path')
     elif commands[0] == 'check':
         if commands[1] == '':
             if cryptostorm.checkKey(key, alphabet):
@@ -86,6 +96,65 @@ def doCommands(commands, conf):
                 print(' - Alphabet is:\n' + alph)
             else:
                 print(' - Whitespaces not allowed\n - Use underline')
+        elif commands[1] == 'file':
+            while True:
+                file = input('File: ')
+                try:
+                    data = open(file, 'r').readlines()
+                    break
+                except Exception:
+                    print(' - Error: File does\'t exist')
+            alph = cryptostorm.convertTo(cryptostorm.pickChars(data, False))
+            config.set('cryptography', 'alphabet', alph)
+            config.write(open(conf, 'w'))
+            print(' - Alphabet is:\n' + alph)
+    elif commands[0] == 'encryptFile' or commands[0] == 'ecf':
+        while True:
+            file = input('File: ')
+            try:
+                open(file, 'r')
+                break
+            except Exception:
+                print(' - Error: File does\'t exist')
+
+        try:
+            if commands[1] != '':
+                roter = cryptostorm.encryptFile(file, alphabet, key, commands[1])
+            else:
+                roter = cryptostorm.encryptFile(file, alphabet, key)
+        except cryptostorm.WrongMsg as error:
+            print(' - Error: {0}'.format(error))
+        except cryptostorm.WrongKey as error:
+            print(' - Error: {0}'.format(error))
+        except Exception as error:
+            print(' - Error: {0}'.format(error))
+        else:
+            print(' - To decrypt this file use this number: ' + str(roter))
+    elif commands[0] == 'decryptFile' or commands[0] == 'dcf':
+        while True:
+            file = input('File: ')
+            if file[-1:] == '.':
+                file += 'cse'
+            try:
+                open(file, 'r')
+                break
+            except Exception:
+                print(' - Error: File does\'t exist')
+
+        while True:
+            try:
+                start = int(input('Number: '))
+                if start < 0:
+                    print(' - Error: Start value can\'t be smaller than 0')
+                break
+            except ValueError:
+                print(' - Error: Wrong value')
+
+        if commands[1] != '':
+            roter = cryptostorm.decryptFile(file, alphabet, key, start, commands[1])
+        else:
+            roter = cryptostorm.decryptFile(file, alphabet, key, start)
+
     elif commands[0] == 'encrypt' or commands[0] == 'ec':
         msg = cryptostorm.convertTo(input('Message: '))
 
